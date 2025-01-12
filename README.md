@@ -126,6 +126,8 @@ This architecture promotes scalability, testability, and adherence to best pract
 
 - **Generate Jwt**
 
+    ***Action:*** Create a new token authorization
+
     ***Endpoint:***
 
     ```http
@@ -149,11 +151,11 @@ This architecture promotes scalability, testability, and adherence to best pract
     }
     ```
 
-    ***Action:*** Create a new token authorization
-
 ### PropertyController
 
 - **Get properties**
+
+    ***Action:*** Returned properties list paging by filters
 
     ***Endpoint:***
 
@@ -180,9 +182,9 @@ This architecture promotes scalability, testability, and adherence to best pract
     }
     ```
 
-    ***Action:*** Returned properties list paging by filters
-
 - **Get property**
+
+    ***Action:*** Return property by id
 
     ***Endpoint:***
 
@@ -205,11 +207,11 @@ This architecture promotes scalability, testability, and adherence to best pract
     }
     ```
 
-    ***Action:*** Return property by id
-
 ### PropertyImageController
 
 - **Set property image**
+
+    ***Action:*** Add a image for property
 
     ***Endpoint:***
 
@@ -239,11 +241,11 @@ This architecture promotes scalability, testability, and adherence to best pract
     }
     ```
 
-    ***Action:*** Add a image for property
-
 ### OwnerController
 
 - **Create a owner**
+
+    ***Action:*** Add a image for property
 
     ***Endpoint:***
 
@@ -268,8 +270,6 @@ This architecture promotes scalability, testability, and adherence to best pract
     }
     ```
 
-    ***Action:*** Add a image for property
-
 ## Database Reference
 
 ### Flow Diagram
@@ -284,6 +284,8 @@ flowchart LR
     A(Owner) --link--> B(Property)
     B(Property) --link--> C(PropertyImage)
     B(Property) --link--> D(PropertyTrace)
+    E(SecurityUser)
+    F(LogTransaction)
 ```
 
 ### Relationship Diagram
@@ -297,6 +299,8 @@ erDiagram
     Owner ||--|{ Property : has
     Property ||..|{ PropertyImage : uses
     Property ||--|{ PropertyTrace : has
+    SecurityUser
+    LogTransaction
 ```
 
 ### Class Diagram
@@ -325,6 +329,8 @@ achieve functionality.
 ```mermaid
 sequenceDiagram
     Client-->API: Do something
+    Client-->>SecurityService: Do request
+    SecurityService-->>Client: Do response
     API-->DoingService: Start doing process
     break when the doing process fails
         API-->Client: show failure
@@ -373,6 +379,12 @@ What did you learn while building this project? What challenges did you face and
 - [x] Manage Performance
 - [x] Unit Test
 - [x] Security
+
+## Learn with me
+
+- [How to use mermaid diagrams](https://mermaid.js.org/ecosystem/tutorials.html)
+- [How to use http files](https://learn.microsoft.com/en-us/aspnet/core/test/http-files?view=aspnetcore-8.0)
+- [How to use http-client.env.json and .env](https://learn.microsoft.com/en-us/aspnet/core/test/http-files?view=aspnetcore-8.0#environment-files)
 
 ## Authors
 
