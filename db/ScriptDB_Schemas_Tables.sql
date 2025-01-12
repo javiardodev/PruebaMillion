@@ -43,13 +43,13 @@ IF(NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Owner'))
 BEGIN
 	CREATE TABLE rso.Owner(
 		IdOwner INT IDENTITY(1,1) NOT NULL,
-		Name VARCHAR(50) NOT NULL,
-		Address VARCHAR(50) NOT NULL,
+		[Name] VARCHAR(50) NOT NULL,
+		[Address] VARCHAR(50) NOT NULL,
 		Photo VARCHAR(255) NULL,
-		Birthday DATETIME DEFAULT NULL,
+		Birthday DATETIME DEFAULT '1900-01-01' NULL,
 		IsDeleted BIT DEFAULT 0 NOT NULL,
-		CreatedAt DATETIME DEFAULT GETDATE(),
-		UpdatedAt DATETIME DEFAULT NULL,
+		CreatedAt DATETIME DEFAULT '1900-01-01 00:00:00' NOT NULL,
+		UpdatedAt DATETIME NULL,
 		CONSTRAINT IdOwner_pk PRIMARY KEY CLUSTERED (IdOwner)
 	);
 
@@ -111,15 +111,15 @@ IF(NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Property'))
 BEGIN
 	CREATE TABLE rsp.Property(
 		IdProperty INT IDENTITY(1,1) NOT NULL,
-		Name VARCHAR(100) NOT NULL,
-		Address VARCHAR(50) NOT NULL,
-		Price DECIMAL(9,2) default 0.00 NOT NULL,
+		[Name] VARCHAR(100) NOT NULL,
+		[Address] VARCHAR(50) NOT NULL,
+		Price DECIMAL(9,2) DEFAULT 0.00 NOT NULL,
 		CodeInternal VARCHAR(20) NOT NULL,
 		[Year] INT NOT NULL,
 		IsDeleted BIT DEFAULT 0 NOT NULL,
 		IdOwner INT NOT NULL,
-		CreatedAt DATETIME DEFAULT GETDATE(),
-		UpdatedAt DATETIME DEFAULT NULL,
+		CreatedAt DATETIME DEFAULT '1900-01-01 00:00:00' NOT NULL,
+		UpdatedAt DATETIME,
 		CONSTRAINT IdProperty_pk PRIMARY KEY CLUSTERED (IdProperty),
 		CONSTRAINT IdOwner_fk FOREIGN KEY (IdOwner) REFERENCES rso.Owner(IdOwner)
 	);
@@ -198,7 +198,7 @@ BEGIN
 		[Enabled] BIT DEFAULT 1 NOT NULL,
 		IdProperty INT NOT NULL,
 		CreatedAt DATETIME DEFAULT GETDATE(),
-		UpdatedAt DATETIME DEFAULT NULL,
+		UpdatedAt DATETIME,
 		CONSTRAINT IdPropertyImage_pk PRIMARY KEY CLUSTERED (IdPropertyImage),
 		CONSTRAINT IdProperty_fk FOREIGN KEY (IdProperty) REFERENCES rsp.Property(IdProperty)
 	);
@@ -249,12 +249,13 @@ IF(NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'PropertyTrace'))
 BEGIN
 	CREATE TABLE rsp.PropertyTrace(
 		IdPropertyTrace INT IDENTITY(1,1) NOT NULL,
-		DateSale DATE NOT NULL,
-		Name VARCHAR(50) NOT NULL,
-		Value DECIMAL(9,2) DEFAULT 0.00 NOT NULL,
-		Tax DECIMAL DEFAULT 0.00 NOT NULL,
+		DateSale DATETIME DEFAULT '1900-01-01 00:00:00' NOT NULL,
+		[Name] VARCHAR(50) NOT NULL,
+		[Value] DECIMAL(9,2) DEFAULT 0.00 NOT NULL,
+		Tax DECIMAL(9,2) DEFAULT 0.00 NOT NULL,
 		IdProperty INT NOT NULL,
-		CreatedAt DATETIME DEFAULT GETDATE(),
+		CreatedAt DATETIME DEFAULT '1900-01-01 00:00:00' NOT NULL,
+		UpdatedAt DATETIME,
 		CONSTRAINT IdPropertyTrace_pk PRIMARY KEY CLUSTERED (IdPropertyTrace),
 		CONSTRAINT IdProperty_fk2 FOREIGN KEY (IdProperty) REFERENCES rsp.Property(IdProperty)
 	);
@@ -305,16 +306,23 @@ BEGIN
 		@level0type = N'Schema',   @level0name = 'rsp',
 		@level1type = N'Table',    @level1name = 'PropertyTrace',
 		@level2type = N'Column',   @level2name = 'CreatedAt';
+		
+	EXEC sp_addextendedproperty 
+		@name = N'MS_Description', @value = 'Modify date',
+		@level0type = N'Schema',   @level0name = 'rsp',
+		@level1type = N'Table',    @level1name = 'PropertyTrace',
+		@level2type = N'Column',   @level2name = 'UpdatedAt';
 END
 
 IF(NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'SecurityUser')) 
 BEGIN
 	CREATE TABLE sc.SecurityUser(
 		IdSecurityUser INT IDENTITY(1,1) NOT NULL,
-		Name VARCHAR(20) NOT NULL,
-		Password VARCHAR(255) NOT NULL,
+		Username VARCHAR(20) NOT NULL,
+		[Password] VARCHAR(255) NOT NULL,
 		IsActive BIT DEFAULT 1 NOT NULL,
-		CreatedAt DATETIME DEFAULT GETDATE(),
+		CreatedAt DATETIME DEFAULT '1900-01-01 00:00:00' NOT NULL,
+		UpdatedAt DATETIME,
 		CONSTRAINT IdSecurityUser_pk PRIMARY KEY CLUSTERED (IdSecurityUser)
 	);
 
@@ -342,7 +350,7 @@ BEGIN
 		@level2type = N'Column',   @level2name = 'Password';
 	
 	EXEC sp_addextendedproperty 
-		@name = N'MS_Description', @value = 'enabled user',
+		@name = N'MS_Description', @value = 'Enabled user',
 		@level0type = N'Schema',   @level0name = 'sc',
 		@level1type = N'Table',    @level1name = 'SecurityUser',
 		@level2type = N'Column',   @level2name = 'IsActive';
@@ -352,23 +360,30 @@ BEGIN
 		@level0type = N'Schema',   @level0name = 'sc',
 		@level1type = N'Table',    @level1name = 'SecurityUser',
 		@level2type = N'Column',   @level2name = 'CreatedAt';
+		
+	EXEC sp_addextendedproperty
+		@name = N'MS_Description', @value = 'Modify date',
+		@level0type = N'Schema',   @level0name = 'sc',
+		@level1type = N'Table',    @level1name = 'SecurityUser',
+		@level2type = N'Column',   @level2name = 'UpdatedAt';
 END
 
 IF(NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'LogTransaction')) 
 BEGIN
 	CREATE TABLE log.LogTransaction(
 		IdLogTransaction INT IDENTITY(1,1) NOT NULL,
-		IdRequest VARCHAR(20) NULL,
+		IdRequest VARCHAR(20),
 		CodeApp INT NOT NULL,
-		Entity VARCHAR(20) NOT NULL,
-		Operation VARCHAR(20) NOT NULL,
+		Entity VARCHAR(50) NOT NULL,
+		Operation VARCHAR(50) NOT NULL,
 		Status VARCHAR(10) DEFAULT '' NOT NULL,
+		StatusCode INT DEFAULT 0 NOT NULL,
 		DataBefore VARCHAR(255) DEFAULT '' NOT NULL,
 		DataAfter VARCHAR(255) DEFAULT '' NOT NULL,
 		Message VARCHAR(255) DEFAULT '' NOT NULL,
 		Exception VARCHAR(255) DEFAULT '' NOT NULL,
-		Trace VARCHAR(255) DEFAULT '' NOT NULL,
-		CreatedAt DATETIME DEFAULT GETDATE(),
+		Trace VARCHAR(1000) DEFAULT '' NOT NULL,
+		CreatedAt DATETIME DEFAULT '1900-01-01 00:00:00' NOT NULL,
 		Url VARCHAR(255) DEFAULT '' NOT NULL,
 		CONSTRAINT IdSecurityUser_pk PRIMARY KEY CLUSTERED (IdLogTransaction)
 	);
