@@ -26,6 +26,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Security", "Security", "{85353603-DCAA-4806-84D5-FAB34206EB88}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Property", "Property", "{B5737ADF-C4E0-4636-BEB8-CFA9EFA6A6B2}"
+	ProjectSection(SolutionItems) = preProject
+		src\RealEstate.Api\RealEstate.Api.http = src\RealEstate.Api\RealEstate.Api.http
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PropertyImage", "PropertyImage", "{6A7ED542-0A19-40B8-B3AC-8DC01B2B260B}"
 EndProject
