@@ -22,17 +22,30 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.ControllerTest", "test\RealEstate.ControllerTest\RealEstate.ControllerTest.csproj", "{52E58C8D-ED6B-4264-AAA2-89BA4DBCE4DD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "request", "request", "{FAD5FC60-8A4D-4963-9A85-7F3285FF9A34}"
+	ProjectSection(SolutionItems) = preProject
+		request\.env = request\.env
+		request\http-client.env.json = request\http-client.env.json
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Security", "Security", "{85353603-DCAA-4806-84D5-FAB34206EB88}"
+	ProjectSection(SolutionItems) = preProject
+		request\Security\SecurityEndpoints.http = request\Security\SecurityEndpoints.http
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Property", "Property", "{B5737ADF-C4E0-4636-BEB8-CFA9EFA6A6B2}"
 	ProjectSection(SolutionItems) = preProject
-		src\RealEstate.Api\RealEstate.Api.http = src\RealEstate.Api\RealEstate.Api.http
+		request\Property\PropertyEndpoints.http = request\Property\PropertyEndpoints.http
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PropertyImage", "PropertyImage", "{6A7ED542-0A19-40B8-B3AC-8DC01B2B260B}"
+	ProjectSection(SolutionItems) = preProject
+		request\PropertyImage\PropertyImageEndpoints.http = request\PropertyImage\PropertyImageEndpoints.http
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Owner", "Owner", "{5EBE3B74-83C6-4E31-8779-BDC6A8AAA573}"
+	ProjectSection(SolutionItems) = preProject
+		request\Owner\OwnerEndpoints.http = request\Owner\OwnerEndpoints.http
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
