@@ -1,47 +1,49 @@
-IF(DB_ID('Milliondb') IS NULL)
-BEGIN
-	CREATE DATABASE Milliondb
-END
+IF DB_ID('$(MSSQL_DB)') IS NOT NULL
+  set noexec on
+
+CREATE DATABASE $(MSSQL_DB);
 GO
 
-USE Milliondb;
+USE $(MSSQL_DB);
 GO
 
-IF(SCHEMA_ID('rso') IS NULL) 
-	BEGIN
-		EXEC('CREATE SCHEMA rso')
-		EXEC sp_addextendedproperty 
-			@name = N'MS_Description', @value = 'Owner''s transactions schema',
-			@level0type = N'Schema',   @level0name = 'rso'
-	END
 
-IF(SCHEMA_ID('rsp') IS NULL) 
-	BEGIN
-		EXEC('CREATE SCHEMA rsp')
-		EXEC sp_addextendedproperty 
-			@name = N'MS_Description', @value = 'Properties transactions schema',
-			@level0type = N'Schema',   @level0name = 'rsp'
-	END
+EXEC('CREATE SCHEMA reo')
+EXEC sp_addextendedproperty 
+	@name = N'MS_Description', @value = 'Owner''s transactions schema',
+	@level0type = N'Schema',   @level0name = 'reo'
+GO
 
-IF (SCHEMA_ID('sc') IS NULL) 
-	BEGIN
-		EXEC('CREATE SCHEMA sc')
-		EXEC sp_addextendedproperty 
-			@name = N'MS_Description', @value = 'Security transactions schema',
-			@level0type = N'Schema',   @level0name = 'sc'
-	END
+EXEC('CREATE SCHEMA rep')
+EXEC sp_addextendedproperty 
+	@name = N'MS_Description', @value = 'Properties transactions schema',
+	@level0type = N'Schema',   @level0name = 'rep'
+GO
 
-IF(SCHEMA_ID('log') IS NULL)
-	BEGIN
-		EXEC('CREATE SCHEMA log')
-		EXEC sp_addextendedproperty 
-			@name = N'MS_Description', @value = 'Logger transactions schema',
-			@level0type = N'Schema',   @level0name = 'log'
-	END
+EXEC('CREATE SCHEMA res')
+EXEC sp_addextendedproperty 
+	@name = N'MS_Description', @value = 'Security transactions schema',
+	@level0type = N'Schema',   @level0name = 'res'
+GO
+
+EXEC('CREATE SCHEMA rel')
+EXEC sp_addextendedproperty 
+	@name = N'MS_Description', @value = 'Logger transactions schema',
+	@level0type = N'Schema',   @level0name = 'rel'
+GO
+
+CREATE LOGIN $(MSSQL_USER) WITH PASSWORD = '$(MSSQL_PASSWORD)'
+GO
+
+CREATE USER $(MSSQL_USER) FOR LOGIN $(MSSQL_USER) WITH DEFAULT_SCHEMA=[res]
+GO
+
+ALTER ROLE db_owner ADD MEMBER $(MSSQL_USER)
+GO
 	
 IF(NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Owner')) 
 BEGIN
-	CREATE TABLE rso.Owner(
+	CREATE TABLE reo.Owner(
 		IdOwner INT IDENTITY(1,1) NOT NULL,
 		[Name] VARCHAR(50) NOT NULL,
 		[Address] VARCHAR(50) NOT NULL,
@@ -55,61 +57,61 @@ BEGIN
 
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Main table for owner data',
-		@level0type = N'Schema',   @level0name = 'rso',
+		@level0type = N'Schema',   @level0name = 'reo',
 		@level1type = N'Table',    @level1name = 'Owner'
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Registry id',
-		@level0type = N'Schema',   @level0name = 'rso',
+		@level0type = N'Schema',   @level0name = 'reo',
 		@level1type = N'Table',    @level1name = 'Owner',
 		@level2type = N'Column',   @level2name = 'IdOwner';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Deacription name',
-		@level0type = N'Schema',   @level0name = 'rso',
+		@level0type = N'Schema',   @level0name = 'reo',
 		@level1type = N'Table',    @level1name = 'Owner',
 		@level2type = N'Column',   @level2name = 'Name';
 
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Description address',
-		@level0type = N'Schema',   @level0name = 'rso',
+		@level0type = N'Schema',   @level0name = 'reo',
 		@level1type = N'Table',    @level1name = 'Owner',
 		@level2type = N'Column',   @level2name = 'Address';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Picture for recognize',
-		@level0type = N'Schema',   @level0name = 'rso',
+		@level0type = N'Schema',   @level0name = 'reo',
 		@level1type = N'Table',    @level1name = 'Owner',
 		@level2type = N'Column',   @level2name = 'Photo';
 
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Date of birthday',
-		@level0type = N'Schema',   @level0name = 'rso',
+		@level0type = N'Schema',   @level0name = 'reo',
 		@level1type = N'Table',    @level1name = 'Owner',
 		@level2type = N'Column',   @level2name = 'Birthday';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Exists data',
-		@level0type = N'Schema',   @level0name = 'rso',
+		@level0type = N'Schema',   @level0name = 'reo',
 		@level1type = N'Table',    @level1name = 'Owner',
 		@level2type = N'Column',   @level2name = 'IsDeleted';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Registry date',
-		@level0type = N'Schema',   @level0name = 'rso',
+		@level0type = N'Schema',   @level0name = 'reo',
 		@level1type = N'Table',    @level1name = 'Owner',
 		@level2type = N'Column',   @level2name = 'CreatedAt';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Modify date',
-		@level0type = N'Schema',   @level0name = 'rso',
+		@level0type = N'Schema',   @level0name = 'reo',
 		@level1type = N'Table',    @level1name = 'Owner',
 		@level2type = N'Column',   @level2name = 'UpdatedAt';
 END
 
 IF(NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Property')) 
 BEGIN
-	CREATE TABLE rsp.Property(
+	CREATE TABLE rep.Property(
 		IdProperty INT IDENTITY(1,1) NOT NULL,
 		[Name] VARCHAR(100) NOT NULL,
 		[Address] VARCHAR(50) NOT NULL,
@@ -126,73 +128,73 @@ BEGIN
 
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Main table for property data',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'Property'
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Registry id',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'Property',
 		@level2type = N'Column',   @level2name = 'IdProperty';
 
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Description name',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'Property',
 		@level2type = N'Column',   @level2name = 'Name';
 
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Description address',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'Property',
 		@level2type = N'Column',   @level2name = 'Address';
 
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Property value',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'Property',
 		@level2type = N'Column',   @level2name = 'Price';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Internal id complementary',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'Property',
 		@level2type = N'Column',   @level2name = 'CodeInternal';
 
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Year of construction',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'Property',
 		@level2type = N'Column',   @level2name = 'Year';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Exists data',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'Property',
 		@level2type = N'Column',   @level2name = 'IsDeleted';
 
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Registry id for table Owner',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'Property',
 		@level2type = N'Column',   @level2name = 'IdOwner';
 
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Registry date',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'Property',
 		@level2type = N'Column',   @level2name = 'CreatedAt';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Modify date',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'Property',
 		@level2type = N'Column',   @level2name = 'UpdatedAt';
 END
 
 IF(NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'PropertyImage')) 
 BEGIN
-	CREATE TABLE rsp.PropertyImage(
+	CREATE TABLE rep.PropertyImage(
 		IdPropertyImage INT IDENTITY(1,1) NOT NULL,
 		[File] VARCHAR(255) NOT NULL,
 		[Enabled] BIT DEFAULT 1 NOT NULL,
@@ -205,49 +207,49 @@ BEGIN
 
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Main table for upload property image',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'PropertyImage'
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Registry id',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'PropertyImage',
 		@level2type = N'Column',   @level2name = 'IdPropertyImage';
 
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Description upload path',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'PropertyImage',
 		@level2type = N'Column',   @level2name = 'File';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Exists data',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'PropertyImage',
 		@level2type = N'Column',   @level2name = 'Enabled';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Registry id for table Property',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'PropertyImage',
 		@level2type = N'Column',   @level2name = 'IdProperty';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Registry date',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'PropertyImage',
 		@level2type = N'Column',   @level2name = 'CreatedAt';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Modify date',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'PropertyImage',
 		@level2type = N'Column',   @level2name = 'UpdatedAt';
 END
 	
 IF(NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'PropertyTrace')) 
 BEGIN
-	CREATE TABLE rsp.PropertyTrace(
+	CREATE TABLE rep.PropertyTrace(
 		IdPropertyTrace INT IDENTITY(1,1) NOT NULL,
 		DateSale DATETIME DEFAULT '1900-01-01 00:00:00' NOT NULL,
 		[Name] VARCHAR(50) NOT NULL,
@@ -262,61 +264,61 @@ BEGIN
 
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Main table for registry property trace',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'PropertyTrace'
 
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Registry id',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'PropertyTrace',
 		@level2type = N'Column',   @level2name = 'IdPropertyTrace';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Sold date',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'PropertyTrace',
 		@level2type = N'Column',   @level2name = 'DateSale';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Description name',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'PropertyTrace',
 		@level2type = N'Column',   @level2name = 'Name';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Sold value',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'PropertyTrace',
 		@level2type = N'Column',   @level2name = 'Value';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Sold tax',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'PropertyTrace',
 		@level2type = N'Column',   @level2name = 'Tax';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Registry id for table property',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'PropertyTrace',
 		@level2type = N'Column',   @level2name = 'IdProperty';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Registry date',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'PropertyTrace',
 		@level2type = N'Column',   @level2name = 'CreatedAt';
 		
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Modify date',
-		@level0type = N'Schema',   @level0name = 'rsp',
+		@level0type = N'Schema',   @level0name = 'rep',
 		@level1type = N'Table',    @level1name = 'PropertyTrace',
 		@level2type = N'Column',   @level2name = 'UpdatedAt';
 END
 
 IF(NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'SecurityUser')) 
 BEGIN
-	CREATE TABLE sc.SecurityUser(
+	CREATE TABLE res.SecurityUser(
 		IdSecurityUser INT IDENTITY(1,1) NOT NULL,
 		Username VARCHAR(20) NOT NULL,
 		[Password] VARCHAR(255) NOT NULL,
@@ -328,49 +330,49 @@ BEGIN
 
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Mainn table for JWT users',
-		@level0type = N'Schema',   @level0name = 'sc',
+		@level0type = N'Schema',   @level0name = 'res',
 		@level1type = N'Table',    @level1name = 'SecurityUser'
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Registry id',
-		@level0type = N'Schema',   @level0name = 'sc',
+		@level0type = N'Schema',   @level0name = 'res',
 		@level1type = N'Table',    @level1name = 'SecurityUser',
 		@level2type = N'Column',   @level2name = 'IdSecurityUser';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Description user',
-		@level0type = N'Schema',   @level0name = 'sc',
+		@level0type = N'Schema',   @level0name = 'res',
 		@level1type = N'Table',    @level1name = 'SecurityUser',
 		@level2type = N'Column',   @level2name = 'Name';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'String base-64 encript',
-		@level0type = N'Schema',   @level0name = 'sc',
+		@level0type = N'Schema',   @level0name = 'res',
 		@level1type = N'Table',    @level1name = 'SecurityUser',
 		@level2type = N'Column',   @level2name = 'Password';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Enabled user',
-		@level0type = N'Schema',   @level0name = 'sc',
+		@level0type = N'Schema',   @level0name = 'res',
 		@level1type = N'Table',    @level1name = 'SecurityUser',
 		@level2type = N'Column',   @level2name = 'IsActive';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Registry date',
-		@level0type = N'Schema',   @level0name = 'sc',
+		@level0type = N'Schema',   @level0name = 'res',
 		@level1type = N'Table',    @level1name = 'SecurityUser',
 		@level2type = N'Column',   @level2name = 'CreatedAt';
 		
 	EXEC sp_addextendedproperty
 		@name = N'MS_Description', @value = 'Modify date',
-		@level0type = N'Schema',   @level0name = 'sc',
+		@level0type = N'Schema',   @level0name = 'res',
 		@level1type = N'Table',    @level1name = 'SecurityUser',
 		@level2type = N'Column',   @level2name = 'UpdatedAt';
 END
 
 IF(NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'LogTransaction')) 
 BEGIN
-	CREATE TABLE log.LogTransaction(
+	CREATE TABLE rel.LogTransaction(
 		IdLogTransaction INT IDENTITY(1,1) NOT NULL,
 		IdRequest VARCHAR(20),
 		CodeApp INT NOT NULL,
@@ -391,6 +393,6 @@ BEGIN
 
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'Main table for log trace',
-		@level0type = N'Schema',   @level0name = 'log',
+		@level0type = N'Schema',   @level0name = 'rel',
 		@level1type = N'Table',    @level1name = 'LogTransaction'
 END

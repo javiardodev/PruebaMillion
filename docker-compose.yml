@@ -32,6 +32,31 @@ services:
         networks:
             network-back:
                 priority: 0
+    db:
+        # build: .
+        container_name: mssql-db
+        image: mcr.microsoft.com/mssql/server:2019-latest
+        env_file: ./request/.env
+        ports:
+            - "1435:1433"
+        restart: always
+        command: /bin/bash ./entrypoint.sh
+        healthcheck:
+            test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S mssql-db -U sa -P VeryComplex123Password -C -Q 'SELECT 1' || exit 1"]
+            interval: 10s
+            retries: 5
+            start_period: 10s
+            timeout: 3s
+        networks:
+            network-back:
+                priority: 0
+        volumes:
+            - api-data:/var/opt/mssql/
+            # - mssql-log:/var/opt/mssql/log/
+            # - mssql-secrets:/var/opt/mssql/secrets/
+            - ./db/entrypoint.sh:/entrypoint.sh
+            - ./db/configure-db.sh:/configure-db.sh
+            - ./db/setup-db.sql:/db/setup-db.sql
 networks:
     network-back:
         name: network-back
@@ -39,3 +64,10 @@ networks:
 volumes:
     api-data:
         name: api-data
+    mssql-data:
+        name: mssql-data
+        external: true
+    # mssql-log:
+    #     name: mssql-log
+    # mssql-secrets:
+    #     name: mssql-secrets
