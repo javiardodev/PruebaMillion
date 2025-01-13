@@ -6,6 +6,13 @@ services:
             context: .
             dockerfile: src/RealEstate.Api/Dockerfile
         container_name: million-api
+        depends_on:
+            - db
+        env_file: 
+            - path: ./request/.env
+              required: true
+            - path: .env
+              required: true
         ports:
             - "5050:8080"
         # healthcheck:
@@ -36,13 +43,15 @@ services:
         # build: .
         container_name: mssql-db
         image: mcr.microsoft.com/mssql/server:2019-latest
-        env_file: ./request/.env
+        env_file:
+            - path: .env
+              required: true
         ports:
             - "1435:1433"
         restart: always
         command: /bin/bash ./entrypoint.sh
         healthcheck:
-            test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S mssql-db -U sa -P VeryComplex123Password -C -Q 'SELECT 1' || exit 1"]
+            test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S mssql-db -U sa -P ${MSSQL_SA_PASSWORD} -C -Q 'SELECT 1' || exit 1"]
             interval: 10s
             retries: 5
             start_period: 10s
