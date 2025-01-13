@@ -7,15 +7,14 @@ WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-
 # Esta fase se usa para compilar el proyecto de servicio
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["RealEstate.Api/RealEstate.Api.csproj", "RealEstate.Api/"]
+COPY ["src/RealEstate.Api/RealEstate.Api.csproj", "RealEstate.Api/"]
 RUN dotnet restore "./RealEstate.Api/RealEstate.Api.csproj"
 COPY . .
-WORKDIR "/src/RealEstate.Api"
+WORKDIR "/src/src/RealEstate.Api"
 RUN dotnet build "./RealEstate.Api.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
 # Esta fase se usa para publicar el proyecto de servicio que se copiará en la fase final.
