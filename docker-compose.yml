@@ -17,6 +17,21 @@ services:
         networks:
             network-back:
                 priority: 0
+    healthcheck:
+        container_name: healthcheck-curl
+        restart: always 
+        image: curlimages/curl:latest
+        entrypoint: ["/bin/sh", "-c", "--", "while true; do sleep 30; done;"]
+        depends_on:
+            - api
+        healthcheck:
+            test: ["CMD", "curl", "-f", "http://million-api:8080/WeatherForecast"]
+            interval: 10s
+            timeout: 3s
+            retries: 5
+        networks:
+            network-back:
+                priority: 0
 networks:
     network-back:
         name: network-back
