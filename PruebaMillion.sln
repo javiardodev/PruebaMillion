@@ -15,7 +15,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Infrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Domain", "src\RealEstate.Domain\RealEstate.Domain.csproj", "{006E02B5-7F51-4B66-BB6A-3BABA43FDB92}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Cross", "src\RealEstate.Cross\RealEstate.Cross.csproj", "{1C650C91-5E4C-4BEB-A152-7F1AB10F7923}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.CrossCutting", "src\RealEstate.CrossCutting\RealEstate.CrossCutting.csproj", "{1C650C91-5E4C-4BEB-A152-7F1AB10F7923}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.ServiceTest", "test\RealEstate.ServiceTest\RealEstate.ServiceTest.csproj", "{E5B8C728-A88B-4D76-996A-8B4FAF4EA450}"
 EndProject
