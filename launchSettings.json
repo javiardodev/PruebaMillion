@@ -4,7 +4,21 @@
       "commandName": "DockerCompose",
       "commandVersion": "1.0",
       "serviceActions": {
-        "realestate.api": "StartDebugging"
+        "api": "StartDebugging",
+        "db": "StartWithoutDebugging",
+        "healthcheck": "StartWithoutDebugging"
+      }
+    },
+    "backend": {
+      "commandName": "DockerCompose",
+      "commandVersion": "1.0",
+      "composeLaunchAction": "LaunchBrowser",
+      "composeLaunchServiceName": "api",
+      "composeLaunchUrl": "{Scheme}://localhost:{ServicePort}/swagger",
+      "serviceActions": {
+        "api": "StartDebugging",
+        "db": "StartWithoutDebugging",
+        "healthcheck": "StartWithoutDebugging"
       }
     }
   }

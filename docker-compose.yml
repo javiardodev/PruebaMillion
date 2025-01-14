@@ -1,10 +1,12 @@
 name: project-million
 services:
     api:
+        profiles: ["backend"]
         image: realestate-api:v1.0
         build:
             context: .
             dockerfile: src/RealEstate.Api/Dockerfile
+        hostname: million-api
         container_name: million-api
         depends_on:
             - db
@@ -25,6 +27,7 @@ services:
             network-back:
                 priority: 0
     healthcheck:
+        profiles: ["backend"]
         container_name: healthcheck-curl
         restart: always 
         image: curlimages/curl:latest
@@ -40,7 +43,9 @@ services:
             network-back:
                 priority: 0
     db:
+        profiles: ["backend"]
         # build: .
+        hostname: mssql-db
         container_name: mssql-db
         image: mcr.microsoft.com/mssql/server:2019-latest
         env_file:
