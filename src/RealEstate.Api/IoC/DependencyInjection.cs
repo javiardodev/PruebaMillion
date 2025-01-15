@@ -1,10 +1,12 @@
-﻿//using Coink.Application.Interfaces.Services;
-//using Coink.Application.Services;
-using RealEstate.CrossCutting.Security.Databases;
-//using RealEstate.Infrastructure.Services.Security;
+﻿using RealEstate.CrossCutting.Configuration.Databases;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using System.Threading.RateLimiting;
+using Serilog;
+using FluentValidation.AspNetCore;
+using RealEstate.Api.Validations;
+using FluentValidation;
 
 namespace RealEstate.Api.IoC;
 
@@ -13,6 +15,16 @@ namespace RealEstate.Api.IoC;
 /// </summary>
 public static class DependencyInjection
 {
+    /// <summary>
+    /// Registry about Serilog tool
+    /// </summary>
+    /// <param name="builder"></param>
+    /// <returns></returns>
+    public static void UseSerilogLogging(this IHostBuilder builder)
+    {
+        builder.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -24,12 +36,34 @@ public static class DependencyInjection
 
         services.AddEndpointsApiExplorer()
                 .AddCorsCustom()
-                .AddServices()
+                .AddCustomValidations()
                 .AddSwagger()
                 .AddProblemDetails()
                 .AddChecks();
 
+        //Restrict request
+        //services.AddRateLimiter(options =>
+        //{
+        //    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
+        //        RateLimitPartition.GetFixedWindowLimiter(
+        //            httpContext.Connection.RemoteIpAddress.ToString(), partition =>
+        //                new FixedWindowRateLimiterOptions
+        //                {
+        //                    AutoReplenishment = true,
+        //                    PermitLimit = 10,
+        //                    QueueLimit = 0,
+        //                    Window = TimeSpan.FromSeconds(1)
+        //                }));
+        //});
+
         return services;
+    }
+
+    private static IServiceCollection AddCustomValidations(this IServiceCollection services)
+    {
+        return services.AddFluentValidationAutoValidation()
+            .AddFluentValidationClientsideAdapters()
+            .AddValidatorsFromAssemblyContaining<CredentialsRequestValidator>();
     }
 
     private static IServiceCollection AddCorsCustom(this IServiceCollection services)
@@ -41,15 +75,6 @@ public static class DependencyInjection
                       .AllowAnyMethod()
                       .AllowAnyHeader());
         });
-
-        return services;
-    }
-
-    private static IServiceCollection AddServices(this IServiceCollection services)
-    {
-        //services.AddScoped<IUserService, UserService>()
-        //        .AddScoped<IAuthService, AuthService>()
-        //        .AddScoped<ITokenService, TokenService>();
 
         return services;
     }
