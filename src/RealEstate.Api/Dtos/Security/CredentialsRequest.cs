@@ -2,6 +2,9 @@
 
 namespace RealEstate.Api.Dtos.Security;
 
+/// <summary>
+/// 
+/// </summary>
 //public record CredentialsRequest(string usernname, string password );
 public class CredentialsRequest : BaseIn
 {

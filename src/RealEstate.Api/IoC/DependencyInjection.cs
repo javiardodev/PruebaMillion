@@ -41,29 +41,20 @@ public static class DependencyInjection
                 .AddProblemDetails()
                 .AddChecks();
 
-        //Restrict request
-        //services.AddRateLimiter(options =>
-        //{
-        //    options.GlobalLimiter = PartitionedRateLimiter.Create<HttpContext, string>(httpContext =>
-        //        RateLimitPartition.GetFixedWindowLimiter(
-        //            httpContext.Connection.RemoteIpAddress.ToString(), partition =>
-        //                new FixedWindowRateLimiterOptions
-        //                {
-        //                    AutoReplenishment = true,
-        //                    PermitLimit = 10,
-        //                    QueueLimit = 0,
-        //                    Window = TimeSpan.FromSeconds(1)
-        //                }));
-        //});
-
         return services;
     }
 
     private static IServiceCollection AddCustomValidations(this IServiceCollection services)
     {
-        return services.AddFluentValidationAutoValidation()
+        services.AddFluentValidationAutoValidation()
+           .AddFluentValidationClientsideAdapters()
+           .AddValidatorsFromAssemblyContaining<CredentialsRequestValidator>();
+
+        services.AddFluentValidationAutoValidation()
             .AddFluentValidationClientsideAdapters()
-            .AddValidatorsFromAssemblyContaining<CredentialsRequestValidator>();
+            .AddValidatorsFromAssemblyContaining<OwnerRequestValidator>();
+
+        return services;
     }
 
     private static IServiceCollection AddCorsCustom(this IServiceCollection services)

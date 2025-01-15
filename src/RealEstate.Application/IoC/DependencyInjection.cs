@@ -18,8 +18,8 @@ public static class DependencyInjection
 
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
-        services.AddScoped<ISecurityService, SecurityService>();
-        //        .AddScoped<IAuthService, AuthService>()
+        services.AddScoped<ISecurityService, SecurityService>()
+                .AddScoped<IOwnerService, OwnerService>();
         //        .AddScoped<ITokenService, TokenService>();
 
         return services;
@@ -29,7 +29,7 @@ public static class DependencyInjection
     {
         //services.AddFluentValidationAutoValidation()
         //        .AddFluentValidationClientsideAdapters();
-                //.AddValidatorsFromAssemblyContaining<ClassValidatorApplication>();
+        //.AddValidatorsFromAssemblyContaining<ClassValidatorApplication>();
 
         return services;
     }

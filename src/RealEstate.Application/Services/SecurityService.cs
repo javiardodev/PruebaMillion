@@ -40,10 +40,11 @@ public class SecurityService(ISecurityRepository securityRepository, IJwtGenerat
         }
         catch (Exception ex)
         {
-            return new CredentialsOut { 
-                Message = $"Ha ocurrido un error. {ex.Message}", 
-                Result = nameof(Result.Error), 
-                StatusCode = StatusCodes.Status500InternalServerError 
+            return new CredentialsOut
+            {
+                Message = $"Ha ocurrido un error. {ex.Message}",
+                Result = nameof(Result.Error),
+                StatusCode = StatusCodes.Status500InternalServerError
             };
         }
     }

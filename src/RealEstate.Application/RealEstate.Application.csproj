@@ -17,8 +17,4 @@
     <ProjectReference Include="..\RealEstate.Domain\RealEstate.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-
 </Project>
