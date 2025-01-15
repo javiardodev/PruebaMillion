@@ -58,17 +58,10 @@ gh repo clone javiardodev/PruebaMillion
 
 To deploy this project, using:
 
-- Docker
+- Docker compose
 
 ```sh
-docker compose up    
-```
-
-or
-
-```sh
-docker build -t million .
-docker run -d -p 8080:8080 million
+docker compose up -d --profile backend
 ```
 
 Then, you can to go on your browser and access link URL `http://localhost:8080/swagger/`
