@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace RealEstate.Domain.Entities.Controller;
+﻿namespace RealEstate.Domain.Entities.Controller;
 
 public class Owner
 {

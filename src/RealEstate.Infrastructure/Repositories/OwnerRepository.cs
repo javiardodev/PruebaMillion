@@ -1,6 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RealEstate.Application.Common.Interfaces;
+using RealEstate.CrossCutting.Common;
 using RealEstate.Domain.Entities.Controller;
 using RealEstate.Infrastructure.Data;
 
@@ -10,9 +10,21 @@ public class OwnerRepository(ApiDbContext context) : IOwnerRepository
 {
     private readonly ApiDbContext _context = context;
 
-    public async Task<List<Owner>> GetAllAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<Owner>> GetFilteredOwnersAsync(OwnerFilterDto filters, CancellationToken cancellationToken)
     {
-        return await _context.Owner.ToListAsync(cancellationToken);
+        var query = _context.Owner.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(filters.Name))
+        {
+            query = query.Where(o => o.Name.Contains(filters.Name));
+        }
+
+        if (!string.IsNullOrWhiteSpace(filters.Address))
+        {
+            query = query.Where(o => o.Address.Contains(filters.Address));
+        }
+
+        return await query.ToListAsync(cancellationToken);
     }
 
     public async Task<int> AddItem(Owner data, CancellationToken cancellationToken)

@@ -25,11 +25,24 @@ namespace RealEstate.Api.Controllers
     {
         private readonly IOwnerService _ownerService = ownerService;
 
-        // GET: api/<OwnerController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="filters"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        [HttpGet("Provider")]
+        public async Task<IActionResult> Get(OwnerFilterRequest filters, CancellationToken cancellationToken)
         {
-            return new string[] { "value1", "value2" };
+            try
+            {
+                OwnerListOut output = await _ownerService.GetFilteredOwners(filters.MapToFiltersIn(), cancellationToken);
+                return Ok(output.MapToResponse());
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Message = $"Se presento error al listar informacion, {ex.Message}" });
+            }
         }
 
         /// <summary>
@@ -45,12 +58,12 @@ namespace RealEstate.Api.Controllers
         {
             try
             {
-                OwnerRegistryOut output = await _ownerService.CreateOwner(request.MapToRegistryIn(), photo ,cancellationToken);
+                OwnerRegistryOut output = await _ownerService.CreateOwner(request.MapToRegistryIn(), photo, cancellationToken);
                 return Ok(output.MapToResponse());
             }
             catch (Exception ex)
             {
-                return BadRequest(new { Message = $"El usuario no existe, {ex.Message}" });
+                return BadRequest(new { Message = $"Se presento error al registrar, {ex.Message}" });
             }
         }
     }

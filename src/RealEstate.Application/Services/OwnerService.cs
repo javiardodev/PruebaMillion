@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using RealEstate.Application.Common.Interfaces;
+using RealEstate.Application.Dtos.Owner;
 using RealEstate.Application.Dtos.Owners;
 using RealEstate.Application.Extensions.Owners;
 using RealEstate.CrossCutting.Common;
@@ -55,9 +56,40 @@ public class OwnerService(IOwnerRepository ownerRepository, ILogger<OwnerService
         }
     }
 
-    public async Task<OwnerListOut> QueryOwners(CancellationToken cancellationToken)
+    public async Task<OwnerListOut> GetFilteredOwners(OwnerFilterDto filters, CancellationToken cancellationToken)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var owners = await _ownerRepository.GetFilteredOwnersAsync(filters, cancellationToken);
+
+            OwnerListOut output = new()
+            {
+                ListOwners = owners.Select(x => new OwnerDto
+                {
+                    Id = x.Id,
+                    Name = x.Name,
+                    Address = x.Address,
+                    Photo = x.Photo,
+                    Birthday = x.Birthday
+                }).ToList(),
+                Message = "Se encontraron los registros con exito.",
+                Result = nameof(Result.Success),
+                StatusCode = StatusCodes.Status200OK
+            };
+
+            _logger.LogInformation("Se consulto exitosamente la informacion de los propietarios."); 
+            return output;
+        }
+        catch (Exception ex)
+        {
+            return new OwnerListOut
+            {
+                ListOwners = new List<OwnerDto>(),
+                Message = $"Ha ocurrido un error. {ex.Message}",
+                Result = nameof(Result.Error),
+                StatusCode = StatusCodes.Status500InternalServerError
+            };
+        }
     }
 
     private string UploadImageOwner(IFormFile photo)

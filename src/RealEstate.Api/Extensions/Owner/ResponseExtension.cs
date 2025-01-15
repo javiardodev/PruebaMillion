@@ -23,4 +23,27 @@ public static class ResponseExtension
             StatusCode = registry.StatusCode
         };
     }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="list"></param>
+    /// <returns></returns>
+    public static OwnerListResponse MapToResponse(this OwnerListOut list)
+    {
+        return new()
+        {
+            ListOwners = list.ListOwners.Select(x => new OwnerDto
+            {
+                Id = x.Id,
+                Name = x.Name,
+                Address = x.Address,
+                Photo = x.Photo,
+                Birthday = x.Birthday
+            }).ToList(),
+            Message = list.Message,
+            Result = list.Result,
+            StatusCode = list.StatusCode
+        };
+    }
 }

@@ -11,8 +11,14 @@ public static class DependencyInjection
     public static IServiceCollection AddApplication(this IServiceCollection services)
     {
         services.AddServices()
-                .AddValidationsBehavior();
+            .AddMapping()
+            .AddValidationsBehavior();
 
+        return services;
+    }
+
+    public static IServiceCollection AddMapping(this IServiceCollection services)
+    {
         return services;
     }
 
