@@ -1,4 +1,4 @@
-﻿namespace RealEstate.CrossCutting.Security.Databases;
+﻿namespace RealEstate.CrossCutting.Configuration.Databases;
 
 public class DbCredentials
 {

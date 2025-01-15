@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace RealEstate.CrossCutting.Security.Jwt;
+namespace RealEstate.CrossCutting.Configuration.Jwt;
 
 public class JwtCredentials
 {
