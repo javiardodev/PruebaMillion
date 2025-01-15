@@ -1,13 +1,14 @@
-﻿//using RealEstate.Application.Interfaces.Repository;
-//using RealEstate.Infrastructure.Repository;
-using RealEstate.Infrastructure.Data;
-using RealEstate.CrossCutting.Security.Databases;
-using RealEstate.CrossCutting.Security.Jwt;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using Microsoft.Extensions.DependencyInjection;
+using RealEstate.Application.Common.Interfaces;
+using RealEstate.CrossCutting.Configuration.Databases;
+using RealEstate.CrossCutting.Configuration.Jwt;
+using RealEstate.Infrastructure.Data;
+using RealEstate.Infrastructure.Services.Security;
+using RealEstate.Infrastructure.Repositories;
 
 namespace RealEstate.Infrastructure.IoC;
 
@@ -27,7 +28,11 @@ public static class DependencyInjection
     private static IServiceCollection AddDbConfig(this IServiceCollection services)
     {
         services.AddOptions<DbCredentials>()
-                .BindConfiguration(nameof(DbCredentials));
+                .BindConfiguration(nameof(DbCredentials))
+                .ValidateDataAnnotations()
+                .ValidateOnStart();
+
+        services.AddSingleton(sp => sp.GetRequiredService<IOptions<DbCredentials>>().Value);
 
         return services;
     }
@@ -39,32 +44,29 @@ public static class DependencyInjection
                 .ValidateDataAnnotations()
                 .ValidateOnStart();
 
+        services.AddSingleton(sp => sp.GetRequiredService<IOptions<JwtCredentials>>().Value);
+
         return services;
     }
 
-    private static IServiceCollection AddDbConnection(this IServiceCollection services)
+    private static IServiceCollection AddBackgroundServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddOptions<DbCredentials>()
-                .BindConfiguration(nameof(DbCredentials))
-                .ValidateDataAnnotations()
-                .ValidateOnStart();
-
         return services;
     }
 
     private static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration config)
     {
         services.AddDbContext<ApiDbContext>((sp, db) =>
-                    db.UseSqlServer(
-                        sp.GetRequiredService<IOptions<DbCredentials>>().Value.SqlServer));
-                //.AddScoped<IAuthRepository, TokenUserRepository>()
-                //.AddScoped<IUserRepository, UserRepository>();
+                    db.UseSqlServer(sp.GetRequiredService<IOptions<DbCredentials>>().Value.SqlServer))
+                .AddScoped<ISecurityRepository, SecurityRepository>();
+              //.AddScoped<IUserRepository, UserRepository>();
 
         return services;
     }
 
     private static IServiceCollection AddJwtAuthentication(this IServiceCollection services)
     {
+        services.AddSingleton<IJwtGenerator, JwtGenerator>();
         services.AddAuthentication(defaultScheme: JwtBearerDefaults.AuthenticationScheme)
                 .AddJwtBearer();
 
