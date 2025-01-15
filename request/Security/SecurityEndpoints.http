@@ -1,0 +1,21 @@
+#Testing request from SecurityController
+
+POST {{HostAddressHttp}}/api/Security/TokenIssue
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "string",
+  "password": "string"
+}
+
+###
+
+POST {{HostAddressHttp}}/api/Security/CredentialsCreate
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username" : "javierski",
+  "password" : "javierski"
+}

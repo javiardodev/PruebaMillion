@@ -1,14 +1,107 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{45E6A5F8-B709-41A1-892A-BA9E35B2F409}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{5E646C8B-2AE7-468F-809F-686BD7D587FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Api", "src\RealEstate.Api\RealEstate.Api.csproj", "{68A6529E-87EC-48DE-A536-B2B7F9781CB4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Application", "src\RealEstate.Application\RealEstate.Application.csproj", "{8225955B-20F8-4B90-AA31-034225751F9A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Infrastructure", "src\RealEstate.Infrastructure\RealEstate.Infrastructure.csproj", "{2D894218-EAAB-4FFA-9A1F-BC23D3467304}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.Domain", "src\RealEstate.Domain\RealEstate.Domain.csproj", "{006E02B5-7F51-4B66-BB6A-3BABA43FDB92}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.CrossCutting", "src\RealEstate.CrossCutting\RealEstate.CrossCutting.csproj", "{1C650C91-5E4C-4BEB-A152-7F1AB10F7923}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.ServiceTest", "test\RealEstate.ServiceTest\RealEstate.ServiceTest.csproj", "{E5B8C728-A88B-4D76-996A-8B4FAF4EA450}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RealEstate.ControllerTest", "test\RealEstate.ControllerTest\RealEstate.ControllerTest.csproj", "{52E58C8D-ED6B-4264-AAA2-89BA4DBCE4DD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "request", "request", "{FAD5FC60-8A4D-4963-9A85-7F3285FF9A34}"
+	ProjectSection(SolutionItems) = preProject
+		request\.env = request\.env
+		request\http-client.env.json = request\http-client.env.json
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Security", "Security", "{85353603-DCAA-4806-84D5-FAB34206EB88}"
+	ProjectSection(SolutionItems) = preProject
+		request\Security\SecurityEndpoints.http = request\Security\SecurityEndpoints.http
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Property", "Property", "{B5737ADF-C4E0-4636-BEB8-CFA9EFA6A6B2}"
+	ProjectSection(SolutionItems) = preProject
+		request\Property\PropertyEndpoints.http = request\Property\PropertyEndpoints.http
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "PropertyImage", "PropertyImage", "{6A7ED542-0A19-40B8-B3AC-8DC01B2B260B}"
+	ProjectSection(SolutionItems) = preProject
+		request\PropertyImage\PropertyImageEndpoints.http = request\PropertyImage\PropertyImageEndpoints.http
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Owner", "Owner", "{5EBE3B74-83C6-4E31-8779-BDC6A8AAA573}"
+	ProjectSection(SolutionItems) = preProject
+		request\Owner\OwnerEndpoints.http = request\Owner\OwnerEndpoints.http
+	EndProjectSection
+EndProject
+Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{7C747BD6-D5E5-4675-A401-88988B8AFBD3}"
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{68A6529E-87EC-48DE-A536-B2B7F9781CB4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{68A6529E-87EC-48DE-A536-B2B7F9781CB4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{68A6529E-87EC-48DE-A536-B2B7F9781CB4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{68A6529E-87EC-48DE-A536-B2B7F9781CB4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8225955B-20F8-4B90-AA31-034225751F9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8225955B-20F8-4B90-AA31-034225751F9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8225955B-20F8-4B90-AA31-034225751F9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8225955B-20F8-4B90-AA31-034225751F9A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D894218-EAAB-4FFA-9A1F-BC23D3467304}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D894218-EAAB-4FFA-9A1F-BC23D3467304}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D894218-EAAB-4FFA-9A1F-BC23D3467304}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D894218-EAAB-4FFA-9A1F-BC23D3467304}.Release|Any CPU.Build.0 = Release|Any CPU
+		{006E02B5-7F51-4B66-BB6A-3BABA43FDB92}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{006E02B5-7F51-4B66-BB6A-3BABA43FDB92}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{006E02B5-7F51-4B66-BB6A-3BABA43FDB92}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{006E02B5-7F51-4B66-BB6A-3BABA43FDB92}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C650C91-5E4C-4BEB-A152-7F1AB10F7923}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C650C91-5E4C-4BEB-A152-7F1AB10F7923}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C650C91-5E4C-4BEB-A152-7F1AB10F7923}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C650C91-5E4C-4BEB-A152-7F1AB10F7923}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5B8C728-A88B-4D76-996A-8B4FAF4EA450}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5B8C728-A88B-4D76-996A-8B4FAF4EA450}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5B8C728-A88B-4D76-996A-8B4FAF4EA450}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5B8C728-A88B-4D76-996A-8B4FAF4EA450}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52E58C8D-ED6B-4264-AAA2-89BA4DBCE4DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52E58C8D-ED6B-4264-AAA2-89BA4DBCE4DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52E58C8D-ED6B-4264-AAA2-89BA4DBCE4DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52E58C8D-ED6B-4264-AAA2-89BA4DBCE4DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C747BD6-D5E5-4675-A401-88988B8AFBD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C747BD6-D5E5-4675-A401-88988B8AFBD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C747BD6-D5E5-4675-A401-88988B8AFBD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C747BD6-D5E5-4675-A401-88988B8AFBD3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{68A6529E-87EC-48DE-A536-B2B7F9781CB4} = {45E6A5F8-B709-41A1-892A-BA9E35B2F409}
+		{8225955B-20F8-4B90-AA31-034225751F9A} = {45E6A5F8-B709-41A1-892A-BA9E35B2F409}
+		{2D894218-EAAB-4FFA-9A1F-BC23D3467304} = {45E6A5F8-B709-41A1-892A-BA9E35B2F409}
+		{006E02B5-7F51-4B66-BB6A-3BABA43FDB92} = {45E6A5F8-B709-41A1-892A-BA9E35B2F409}
+		{1C650C91-5E4C-4BEB-A152-7F1AB10F7923} = {45E6A5F8-B709-41A1-892A-BA9E35B2F409}
+		{E5B8C728-A88B-4D76-996A-8B4FAF4EA450} = {5E646C8B-2AE7-468F-809F-686BD7D587FB}
+		{52E58C8D-ED6B-4264-AAA2-89BA4DBCE4DD} = {5E646C8B-2AE7-468F-809F-686BD7D587FB}
+		{85353603-DCAA-4806-84D5-FAB34206EB88} = {FAD5FC60-8A4D-4963-9A85-7F3285FF9A34}
+		{B5737ADF-C4E0-4636-BEB8-CFA9EFA6A6B2} = {FAD5FC60-8A4D-4963-9A85-7F3285FF9A34}
+		{6A7ED542-0A19-40B8-B3AC-8DC01B2B260B} = {FAD5FC60-8A4D-4963-9A85-7F3285FF9A34}
+		{5EBE3B74-83C6-4E31-8779-BDC6A8AAA573} = {FAD5FC60-8A4D-4963-9A85-7F3285FF9A34}
 	EndGlobalSection
 EndGlobal
