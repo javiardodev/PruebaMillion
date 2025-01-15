@@ -123,7 +123,7 @@ BEGIN
 		CreatedAt DATETIME DEFAULT '1900-01-01 00:00:00' NOT NULL,
 		UpdatedAt DATETIME,
 		CONSTRAINT IdProperty_pk PRIMARY KEY CLUSTERED (IdProperty),
-		CONSTRAINT IdOwner_fk FOREIGN KEY (IdOwner) REFERENCES rso.Owner(IdOwner)
+		CONSTRAINT IdOwner_fk FOREIGN KEY (IdOwner) REFERENCES reo.Owner(IdOwner)
 	);
 
 	EXEC sp_addextendedproperty 
@@ -202,7 +202,7 @@ BEGIN
 		CreatedAt DATETIME DEFAULT GETDATE(),
 		UpdatedAt DATETIME,
 		CONSTRAINT IdPropertyImage_pk PRIMARY KEY CLUSTERED (IdPropertyImage),
-		CONSTRAINT IdProperty_fk FOREIGN KEY (IdProperty) REFERENCES rsp.Property(IdProperty)
+		CONSTRAINT IdProperty_fk FOREIGN KEY (IdProperty) REFERENCES rep.Property(IdProperty)
 	);
 
 	EXEC sp_addextendedproperty 
@@ -259,7 +259,7 @@ BEGIN
 		CreatedAt DATETIME DEFAULT '1900-01-01 00:00:00' NOT NULL,
 		UpdatedAt DATETIME,
 		CONSTRAINT IdPropertyTrace_pk PRIMARY KEY CLUSTERED (IdPropertyTrace),
-		CONSTRAINT IdProperty_fk2 FOREIGN KEY (IdProperty) REFERENCES rsp.Property(IdProperty)
+		CONSTRAINT IdProperty_fk2 FOREIGN KEY (IdProperty) REFERENCES rep.Property(IdProperty)
 	);
 
 	EXEC sp_addextendedproperty 
@@ -343,7 +343,7 @@ BEGIN
 		@name = N'MS_Description', @value = 'Description user',
 		@level0type = N'Schema',   @level0name = 'res',
 		@level1type = N'Table',    @level1name = 'SecurityUser',
-		@level2type = N'Column',   @level2name = 'Name';
+		@level2type = N'Column',   @level2name = 'Username';
 	
 	EXEC sp_addextendedproperty 
 		@name = N'MS_Description', @value = 'String base-64 encript',
