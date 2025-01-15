@@ -59,7 +59,8 @@ public static class DependencyInjection
         services.AddDbContext<ApiDbContext>((sp, db) =>
                     db.UseSqlServer(sp.GetRequiredService<IOptions<DbCredentials>>().Value.SqlServer))
                 .AddScoped<ISecurityRepository, SecurityRepository>()
-                .AddScoped<IOwnerRepository, OwnerRepository>();
+                .AddScoped<IOwnerRepository, OwnerRepository>()
+                .AddScoped<IPropertyImageRepository, PropertyImageRepository>();
 
         return services;
     }

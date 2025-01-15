@@ -25,8 +25,8 @@ public static class DependencyInjection
     private static IServiceCollection AddServices(this IServiceCollection services)
     {
         services.AddScoped<ISecurityService, SecurityService>()
-                .AddScoped<IOwnerService, OwnerService>();
-        //        .AddScoped<ITokenService, TokenService>();
+                .AddScoped<IOwnerService, OwnerService>()
+                .AddScoped<IPropertyImageService, PropertyImageService>();
 
         return services;
     }

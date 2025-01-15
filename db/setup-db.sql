@@ -199,7 +199,7 @@ BEGIN
 		[File] VARCHAR(255) NOT NULL,
 		[Enabled] BIT DEFAULT 1 NOT NULL,
 		IdProperty INT NOT NULL,
-		CreatedAt DATETIME DEFAULT GETDATE(),
+		CreatedAt DATETIME DEFAULT '1900-01-01 00:00:00' NOT NULL,
 		UpdatedAt DATETIME,
 		CONSTRAINT IdPropertyImage_pk PRIMARY KEY CLUSTERED (IdPropertyImage),
 		CONSTRAINT IdProperty_fk FOREIGN KEY (IdProperty) REFERENCES rep.Property(IdProperty)
