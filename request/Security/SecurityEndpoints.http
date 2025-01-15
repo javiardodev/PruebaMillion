@@ -1,6 +1,21 @@
-@RealEstate.Api_HostAddress = http://localhost:5013
+#Testing request from SecurityController
 
-GET {{RealEstate.Api_HostAddress}}/weatherforecast/
+POST {{HostAddressHttp}}/api/Security/TokenIssue
 Accept: application/json
+Content-Type: application/json
+
+{
+  "username": "string",
+  "password": "string"
+}
 
 ###
+
+POST {{HostAddressHttp}}/api/Security/CredentialsCreate
+Accept: application/json
+Content-Type: application/json
+
+{
+  "username" : "javierski",
+  "password" : "javierski"
+}
